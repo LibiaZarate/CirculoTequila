@@ -42,8 +42,19 @@ export default function Panel({ period, setPeriod }) {
   const p = periods[period]
 
   return (
-    <section>
-      <div className="section-head">
+    <section className="panel-section">
+      <div className="panel-orb" aria-hidden>
+        <span className="porb porb__halo" />
+        <span className="porb porb__a" />
+        <span className="porb porb__b" />
+        <span className="porb porb__core" />
+        {[0, 1, 2, 3].map((i) => (
+          <span key={i} className="porb__ring" style={{ '--i': i, '--o': (0.2 - i * 0.045).toFixed(3) }} />
+        ))}
+      </div>
+
+      <div className="panel-body">
+        <div className="section-head">
         <div>
           <div className="eyebrow">Panel · lunes 8:00 a.m.</div>
           <h1 className="headline">
@@ -189,6 +200,7 @@ export default function Panel({ period, setPeriod }) {
           tiempo de cierre prom. <b style={{ color: 'var(--ink-soft)' }}>{handoff.closeDays} días</b> ·{' '}
           {handoff.closeNote} · ventas del periodo {peso(p.revenue)}
         </p>
+      </div>
       </div>
     </section>
   )
