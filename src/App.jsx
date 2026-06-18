@@ -6,7 +6,7 @@ import Agente from './sections/Agente.jsx'
 import Seguimientos from './sections/Seguimientos.jsx'
 import Arquitectura from './sections/Arquitectura.jsx'
 
-const STORAGE_KEY = 'circulo.board.v1'
+const STORAGE_KEY = 'circulo.board.v2'
 
 function loadBoard() {
   try {
@@ -17,7 +17,7 @@ function loadBoard() {
 }
 
 function exportCSV(cards) {
-  const cols = ['id', 'col', 'name', 'ciudad', 'bot', 'ocasion', 'value']
+  const cols = ['id', 'stage', 'name', 'ciudad', 'bot', 'ocasion', 'value']
   const head = cols.join(',')
   const rows = cards.map((c) =>
     cols
@@ -70,9 +70,9 @@ export default function App() {
   useEffect(() => setQuery(''), [section])
 
   const addLead = () => {
-    const n = board.filter((c) => c.col === 'nuevo').length + 1
+    const n = board.filter((c) => c.stage === 1).length + 1
     setBoard((prev) => [
-      { id: 'L-' + Date.now().toString().slice(-5), col: 'nuevo', name: `Prospecto nuevo ${n}`, ciudad: 'wa.api', bot: '— bot', ocasion: 'sin calificar', value: 0 },
+      { id: 'L-' + Date.now().toString().slice(-5), stage: 1, name: `Prospecto nuevo ${n}`, ciudad: 'wa.api', bot: '— bot', ocasion: 'sin calificar', value: 0, tags: [] },
       ...prev,
     ])
     setSection('leads')

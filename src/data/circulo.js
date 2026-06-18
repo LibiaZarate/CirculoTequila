@@ -265,31 +265,34 @@ export const pesoCompact = (n) => {
   return '$' + n
 }
 
-// ── Leads · pipeline vivo (kanban arrastrable) ────────────────────────────
-export const kanbanColumns = [
-  { key: 'nuevo', label: 'Nuevo', accent: '#6aa6dd' },
-  { key: 'costo', label: 'Preguntó costo', accent: '#4ccaa0' },
-  { key: 'cotizacion', label: 'Cotización', accent: '#7fce7a' },
-  { key: 'seguimiento', label: 'Seguimiento', accent: '#d8c265' },
-  { key: 'llamada', label: 'Llamada', accent: '#e9b65d' },
-  { key: 'cerrado', label: 'Cerrado', accent: '#dc9456' },
-]
+// ── Leads · pipeline vivo ─────────────────────────────────────────────────
+// El pipeline ES el Mapa de proceso aplicado (§04): las 10 etapas, en dos
+// zonas (marketing 1-4 · comercial 5-10) con la compuerta MQL→SQL entre la 4
+// y la 5. Las etapas viven en `stages` + `reactivationStage`. Cosas como
+// "cotización", "llamada" o "reactivación" NO son etapas: son etiquetas (tags)
+// que viajan en cada lead.
+
+// Acentos por etapa (frío → cálido: marketing → comercial).
+export const stageAccents = {
+  1: '#6aa6dd', 2: '#4ccaa0', 3: '#5cc88f', 4: '#7fce7a', 5: '#d8c265',
+  6: '#e9b65d', 7: '#e8a955', 8: '#e49a4f', 9: '#e08b4a', 10: '#dc7a45',
+}
 
 export const kanbanCards = [
-  { id: 'L-01', col: 'nuevo', name: 'Hacienda Soltera', ciudad: 'Guadalajara', bot: '100 bot', ocasion: 'boda · sep', value: 225000 },
-  { id: 'L-02', col: 'nuevo', name: 'Rocío Mendívil', ciudad: 'Zapopan', bot: '24 bot', ocasion: 'regalo corporativo', value: 54000 },
-  { id: 'L-03', col: 'nuevo', name: 'Bar La Cantera', ciudad: 'Tlaquepaque', bot: '40 bot', ocasion: 'reventa', value: 90000 },
-  { id: 'L-04', col: 'nuevo', name: 'Iván Robles', ciudad: 'Tonalá', bot: '12 bot', ocasion: 'cumpleaños', value: 19200 },
-  { id: 'L-05', col: 'costo', name: 'Marisol Vega', ciudad: 'Guadalajara', bot: '20 bot', ocasion: 'aniversario', value: 45000 },
-  { id: 'L-06', col: 'costo', name: 'Don Beto', ciudad: 'Chapala', bot: '60 bot', ocasion: 'boda · 8 mesas', value: 135000 },
-  { id: 'L-07', col: 'costo', name: 'Tienda Sur', ciudad: 'Colima', bot: '80 bot', ocasion: 'reventa mayoreo', value: 180000 },
-  { id: 'L-08', col: 'cotizacion', name: 'Lucía Ramírez', ciudad: 'Zapopan', bot: '24 bot', ocasion: 'reposado · regalo', value: 69600 },
-  { id: 'L-09', col: 'cotizacion', name: 'Grupo Ágave', ciudad: 'Guadalajara', bot: '40 bot', ocasion: 'evento empresa', value: 90000 },
-  { id: 'L-10', col: 'cotizacion', name: 'Pablo Cortés', ciudad: 'Puerto Vallarta', bot: '12 bot', ocasion: 'cena privada', value: 27000 },
-  { id: 'L-11', col: 'seguimiento', name: 'Fernanda Lozano', ciudad: 'Guadalajara', bot: '20 bot', ocasion: 'pidió tiempo', value: 45000 },
-  { id: 'L-12', col: 'seguimiento', name: 'Rest. Maguey', ciudad: 'Tequila', bot: '40 bot', ocasion: 'carta de bebidas', value: 104000 },
-  { id: 'L-13', col: 'llamada', name: 'Hotel Real', ciudad: 'Guadalajara', bot: '120 bot', ocasion: 'agenda vendedor', value: 270000 },
-  { id: 'L-14', col: 'cerrado', name: 'Evento San Luis', ciudad: 'San Luis Potosí', bot: '120 bot', ocasion: 'joven · anticipo ✓', value: 312000 },
+  { id: 'L-04', stage: 1, name: 'Iván Robles', ciudad: 'Tonalá', bot: '12 bot', ocasion: 'cumpleaños', value: 19200, tags: ['retail'] },
+  { id: 'L-02', stage: 2, name: 'Rocío Mendívil', ciudad: 'Zapopan', bot: '24 bot', ocasion: 'regalo corporativo', value: 54000, tags: ['preguntó costo'] },
+  { id: 'L-03', stage: 2, name: 'Bar La Cantera', ciudad: 'Tlaquepaque', bot: '40 bot', ocasion: 'reventa', value: 90000, tags: ['reventa'] },
+  { id: 'L-07', stage: 2, name: 'Tienda Sur', ciudad: 'Colima', bot: '80 bot', ocasion: 'reventa mayoreo', value: 180000, tags: ['mayoreo', 'preguntó costo'] },
+  { id: 'L-12', stage: 3, name: 'Rest. Maguey', ciudad: 'Tequila', bot: '40 bot', ocasion: 'carta de bebidas', value: 104000, tags: ['pidió ficha'] },
+  { id: 'L-01', stage: 4, name: 'Hacienda Soltera', ciudad: 'Guadalajara', bot: '100 bot', ocasion: 'boda · sep', value: 225000, tags: ['pidió ejemplos'] },
+  { id: 'L-05', stage: 4, name: 'Marisol Vega', ciudad: 'Guadalajara', bot: '20 bot', ocasion: 'aniversario', value: 45000, tags: ['cotización'] },
+  { id: 'L-06', stage: 4, name: 'Don Beto', ciudad: 'Chapala', bot: '60 bot', ocasion: 'boda · 8 mesas', value: 135000, tags: ['cotización', 'tiempos'] },
+  { id: 'L-09', stage: 4, name: 'Grupo Ágave', ciudad: 'Guadalajara', bot: '40 bot', ocasion: 'evento empresa', value: 90000, tags: ['espera compras'] },
+  { id: 'L-11', stage: 4, name: 'Fernanda Lozano', ciudad: 'Guadalajara', bot: '20 bot', ocasion: 'reconocimientos', value: 45000, tags: ['reactivación'] },
+  { id: 'L-08', stage: 5, name: 'Lucía Ramírez', ciudad: 'Zapopan', bot: '24 bot', ocasion: 'reposado · regalo', value: 69600, tags: ['cotización'] },
+  { id: 'L-13', stage: 5, name: 'Hotel Real', ciudad: 'Guadalajara', bot: '120 bot', ocasion: 'amenidad VIP', value: 270000, tags: ['llamada', 'orden de compra'] },
+  { id: 'L-10', stage: 6, name: 'Pablo Cortés', ciudad: 'Puerto Vallarta', bot: '12 bot', ocasion: 'cena privada', value: 27000, tags: ['propuesta'] },
+  { id: 'L-14', stage: 10, name: 'Evento San Luis', ciudad: 'San Luis Potosí', bot: '120 bot', ocasion: 'joven · evento', value: 312000, tags: ['entregado ✓'] },
 ]
 
 // ── Contexto que viaja · por lead (Arquitectura §08) ──────────────────────
@@ -413,7 +416,9 @@ export const leadContext = {
     events: [
       { t: 'hace 5 d', e: 'Lead capturado · Meta Ads' },
       { t: 'hace 4 d', e: 'Calificado' },
+      { t: 'hace 3 d', e: 'Transferido a vendedor' },
       { t: 'hace 2 d', e: 'Cotización enviada' },
+      { t: 'hace 1 d', e: 'Propuesta aprobada por el cliente' },
     ],
   },
   'L-11': {
@@ -464,7 +469,10 @@ export const leadContext = {
       { t: 'hace 18 d', e: 'Lead capturado · referido' },
       { t: 'hace 14 d', e: 'Calificado + transferido a comercial' },
       { t: 'hace 9 d', e: 'Propuesta aprobada' },
-      { t: 'hace 5 d', e: 'Anticipo 50% recibido · ganado' },
+      { t: 'hace 7 d', e: 'Anticipo 50% recibido' },
+      { t: 'hace 5 d', e: 'Brief completado' },
+      { t: 'hace 3 d', e: 'Diseño autorizado por el cliente' },
+      { t: 'hace 1 d', e: 'En producción · entrega 20 días hábiles' },
     ],
   },
 }
