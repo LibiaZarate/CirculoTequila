@@ -61,7 +61,7 @@ export default function Agente() {
           </h1>
           <p className="subhead">
             Responde con el SOP de Círculo cargado — voz de marca, catálogo real, reglas duras.
-            Cuando debe derivar, sella el handoff con motivo y timestamp.
+            Cuando debe derivar, sella la transferencia con motivo y hora.
           </p>
         </div>
       </div>

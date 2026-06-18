@@ -1,19 +1,25 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { brand, nav, kanbanCards, agent } from './data/circulo.js'
+import { brand, nav, kanbanCards, leadContext, agent } from './data/circulo.js'
 import Panel from './sections/Panel.jsx'
 import Leads from './sections/Leads.jsx'
 import Agente from './sections/Agente.jsx'
 import Seguimientos from './sections/Seguimientos.jsx'
 import Arquitectura from './sections/Arquitectura.jsx'
 
-const STORAGE_KEY = 'circulo.board.v2'
+const STORAGE_KEY = 'circulo.board.v3'
+
+// Cada lead es la fuente de verdad: posición + contexto + notas, todo junto y
+// persistido. Se siembra fusionando las tarjetas con su contexto que viaja.
+function buildInitial() {
+  return kanbanCards.map((c) => ({ ...(leadContext[c.id] || {}), ...c, notes: [] }))
+}
 
 function loadBoard() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw) return JSON.parse(raw)
   } catch {}
-  return kanbanCards
+  return buildInitial()
 }
 
 function exportCSV(cards) {
@@ -72,7 +78,7 @@ export default function App() {
   const addLead = () => {
     const n = board.filter((c) => c.stage === 1).length + 1
     setBoard((prev) => [
-      { id: 'L-' + Date.now().toString().slice(-5), stage: 1, name: `Prospecto nuevo ${n}`, ciudad: 'wa.api', bot: '— bot', ocasion: 'sin calificar', value: 0, tags: [] },
+      { id: 'L-' + Date.now().toString().slice(-5), stage: 1, name: `Prospecto nuevo ${n}`, ciudad: 'wa.api', bot: '— bot', ocasion: 'sin calificar', value: 0, tags: [], notes: [], linea: 'empresarial', stakeholders: [], events: [{ t: 'ahora', e: 'Lead capturado manualmente' }] },
       ...prev,
     ])
     setSection('leads')

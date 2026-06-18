@@ -267,8 +267,8 @@ export const pesoCompact = (n) => {
 
 // ── Leads · pipeline vivo ─────────────────────────────────────────────────
 // El pipeline ES el Mapa de proceso aplicado (§04): las 10 etapas, en dos
-// zonas (marketing 1-4 · comercial 5-10) con la compuerta MQL→SQL entre la 4
-// y la 5. Las etapas viven en `stages` + `reactivationStage`. Cosas como
+// zonas (marketing 1-4 · comercial 5-10) con la compuerta entre la 4 y la 5.
+// Las etapas viven en `stages` + `reactivationStage`. Cosas como
 // "cotización", "llamada" o "reactivación" NO son etapas: son etiquetas (tags)
 // que viajan en cada lead.
 
@@ -298,7 +298,7 @@ export const kanbanCards = [
 // ── Contexto que viaja · por lead (Arquitectura §08) ──────────────────────
 // Cada oportunidad lleva un bloque que se regenera tras cada interacción:
 // qué pidió, qué objetó, qué se le prometió y qué espera. El handoff deja de
-// ser un cold restart. Se indexa por lead_id para sobrevivir al kanban.
+// empezar de cero. Se indexa por id de lead para sobrevivir al tablero.
 export const leadContext = {
   'L-01': {
     linea: 'empresarial', empresa: 'Hacienda Soltera', cargo: 'Coordinación de eventos', authority: 'decisor',
@@ -491,12 +491,12 @@ export const arquitectura = {
     { n: 3, title: 'Sin trazabilidad post-handoff', body: 'Transferida la oportunidad, desaparece del radar: ni estatus ni motivo de pérdida. Es la fuga más cara — y la que el negocio nombró como su dolor principal.' },
   ],
   principios: [
-    { n: '01', title: 'Eventos, no estados', body: 'Cada acción se guarda como evento inmutable con timestamp. El estatus se deriva del log; cada lead es reconstruible.' },
-    { n: '02', title: 'Una sola fuente de verdad', body: 'WhatsApp, web, correos y Sheets dejan de ser silos: todos alimentan un único registro.' },
-    { n: '03', title: 'Listas cerradas con escape', body: 'Canal, objeción, motivo de pérdida: taxonomías cerradas con “otro” + texto a cola de revisión.' },
-    { n: '04', title: 'Contexto que viaja', body: 'Cada oportunidad lleva un bloque: qué pidió, qué objetó, qué se le prometió y qué espera. El handoff deja de ser un cold restart.' },
+    { n: '01', title: 'Eventos, no estados', body: 'Cada acción se guarda como un evento con su fecha y hora. El estatus se deriva del historial; cada lead es reconstruible.' },
+    { n: '02', title: 'Una sola fuente de verdad', body: 'WhatsApp, web, correos y hojas de cálculo dejan de estar separados: todos alimentan un único registro.' },
+    { n: '03', title: 'Listas cerradas con escape', body: 'Canal, objeción, motivo de pérdida: listas cerradas con “otro” + texto que va a una cola de revisión.' },
+    { n: '04', title: 'Contexto que viaja', body: 'Cada oportunidad lleva un bloque: qué pidió, qué objetó, qué se le prometió y qué espera. La transferencia deja de empezar de cero.' },
     { n: '05', title: 'El agente mide interés, no ventas', body: 'Califica, nutre y agenda. El cierre, el precio especial y el inventario los confirma un humano.' },
-    { n: '06', title: 'Aditivo, no destructivo', body: 'Campos y taxonomías se agregan con versión; nunca se reescribe historia. Crecer no cuesta tirar datos.' },
+    { n: '06', title: 'Aditivo, no destructivo', body: 'Campos y listas se agregan con versión; nunca se reescribe la historia. Crecer no cuesta tirar datos.' },
   ],
   canales: [
     { canal: 'Empresarial', icp: 'Dir./gerente comercial, mkt o RR.PP. que busca regalos corporativos premium', senal: 'Empresa, cargo, volumen (≥12), propósito, fecha', rol: 'Califica a fondo + agenda; nunca compromete arte ni descuento', prioridad: 'alta' },
@@ -515,8 +515,8 @@ export const arquitectura = {
       ],
     },
     {
-      zona: 'Compuerta · MQL → SQL', tone: 'gold', gate: true,
-      etapas: [{ n: '→', label: 'MQL → SQL', senal: 'Cumple criterios mínimos del canal (§06). Solo aquí se transfiere.' }],
+      zona: 'Compuerta · pasa a ventas', tone: 'gold', gate: true,
+      etapas: [{ n: '→', label: 'Pasa a ventas', senal: 'Cumple los criterios mínimos del canal. Solo aquí se transfiere a comercial.' }],
     },
     {
       zona: 'Comercial', tone: 'pink',
@@ -531,12 +531,12 @@ export const arquitectura = {
     },
   ],
   gate: [
-    { criterio: 'Empresa y cargo', campo: 'empresa · authority', umbral: 'Decisor, influencer o gatekeeper.' },
-    { criterio: 'Volumen estimado', campo: 'volumen', umbral: 'Mínimo 12. Por debajo: nutrición / retail.' },
-    { criterio: 'Propósito', campo: 'proposito', umbral: 'Evento, reconocimiento, regalo corporativo.' },
+    { criterio: 'Empresa y cargo', campo: 'empresa y cargo', umbral: 'Identifica si es quien decide o quien influye.' },
+    { criterio: 'Volumen estimado', campo: 'volumen', umbral: 'Mínimo 12 botellas. Por debajo, sigue en seguimiento.' },
+    { criterio: 'Propósito', campo: 'propósito', umbral: 'Evento, reconocimiento, regalo corporativo.' },
     { criterio: 'Ciudad', campo: 'ciudad', umbral: 'Logística y asignación al representante.' },
-    { criterio: 'Fecha objetivo', campo: 'fechaObjetivo', umbral: 'Contra los 20 días hábiles post-arte.' },
-    { criterio: 'Señal de presupuesto', campo: 'budget', umbral: 'confirmado · estimado · desconocido. Orienta, no frena.' },
+    { criterio: 'Fecha objetivo', campo: 'fecha objetivo', umbral: 'Contra los 20 días hábiles de entrega.' },
+    { criterio: 'Señal de presupuesto', campo: 'presupuesto', umbral: 'Confirmado, estimado o por conocer. Orienta, no frena.' },
   ],
   objeciones: [
     { cat: 'precio_premium', tipica: '“Está caro”', marco: 'Reframe a valor percibido del regalo y a la imagen de marca del cliente.' },
@@ -565,9 +565,9 @@ export const arquitectura = {
     { toque: '06+', gap: '+30/60 d', contenido: 'Reactivación por temporada (fin de año, fechas clave)', meta: 're-engage' },
   ],
   telemetria: [
-    { q: '1 · ¿Cuántos generamos, calificaron y llegaron a ventas?', m: 'Volumen por canal · MQL→SQL rate · nº transferidos · % SLA de 1ª respuesta.' },
-    { q: '2 · ¿Qué pasó con los transferidos y su estatus?', m: 'Estatus post-handoff en vivo · ciclo a cierre · motivos de pérdida · oportunidades estancadas.' },
-    { q: '3 · ¿Qué canales generan clientes, no solo conversaciones?', m: 'Conversión a venta por fuente · CPL · valor por canal.' },
+    { q: '1 · ¿Cuántos generamos, calificaron y llegaron a ventas?', m: 'Volumen por canal · % que pasa a ventas · nº transferidos · % de leads respondidos a tiempo.' },
+    { q: '2 · ¿Qué pasó con los transferidos y su estatus?', m: 'Estatus en vivo tras la transferencia · días a cierre · motivos de pérdida · oportunidades estancadas.' },
+    { q: '3 · ¿Qué canales generan clientes, no solo conversaciones?', m: 'Conversión a venta por fuente · costo por lead · valor por canal.' },
   ],
   dashboard: [
     { seccion: 'Resumen del embudo', muestra: 'Leads, en conversación, calificados, enviados, abiertos, ganados.', responde: 'pregunta 1' },

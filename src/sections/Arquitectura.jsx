@@ -40,7 +40,7 @@ export default function Arquitectura() {
                   <span className="arch-channel__name">{c.canal}</span>
                   <span className={'chip ' + prio(c.prioridad)}>{c.prioridad}</span>
                 </div>
-                <div className="arch-kv"><b>ICP</b>{c.icp}</div>
+                <div className="arch-kv"><b>Cliente ideal</b>{c.icp}</div>
                 <div className="arch-kv"><b>Señal de calificación</b>{c.senal}</div>
                 <div className="arch-kv"><b>Rol del agente</b>{c.rol}</div>
               </div>
@@ -74,7 +74,7 @@ export default function Arquitectura() {
         {/* Compuerta */}
         <div className="grid grid--2">
           <div className="card">
-            <h3 className="section-title">Compuerta · criterios duros (empresarial)</h3>
+            <h3 className="section-title">Compuerta · criterios mínimos (empresarial)</h3>
             <table className="price-table">
               <thead>
                 <tr><th>Criterio</th><th>Umbral / nota</th></tr>
@@ -108,7 +108,7 @@ export default function Arquitectura() {
 
         {/* Taxonomías */}
         <div className="card">
-          <h3 className="section-title">Taxonomías cerradas · objeciones</h3>
+          <h3 className="section-title">Objeciones · respuestas tipo</h3>
           <div className="obj-list">
             {A.objeciones.map((o) => (
               <div className="obj-row" key={o.cat}>
@@ -120,7 +120,7 @@ export default function Arquitectura() {
               </div>
             ))}
           </div>
-          <div className="loss__title" style={{ marginTop: 22 }}>Motivos de pérdida · lista cerrada</div>
+          <div className="loss__title" style={{ marginTop: 22 }}>Motivos de pérdida</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 10 }}>
             {A.motivosPerdida.map((m) => (
               <span className="chip" key={m}>{m}</span>
@@ -131,7 +131,7 @@ export default function Arquitectura() {
         {/* Telemetría + dashboard */}
         <div className="grid grid--2">
           <div className="card">
-            <h3 className="section-title">Telemetría · las 3 preguntas del lunes</h3>
+            <h3 className="section-title">Las 3 preguntas del lunes</h3>
             <div className="stack" style={{ gap: 12 }}>
               {A.telemetria.map((t, i) => (
                 <div className="tele" key={i}>
