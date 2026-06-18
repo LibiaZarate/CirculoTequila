@@ -14,15 +14,12 @@ comercial).
 
 ## Secciones
 
-| # | Sección | Qué responde |
-|---|---------|--------------|
-| 01 | **Panel** | Las 3 preguntas del lunes: cuántos se generaron / calificaron / llegaron a ventas (embudo), qué pasó tras el *handoff*, y qué canales generan **clientes** (no solo conversaciones). |
-| 02 | **Jardín de leads** | Estado real de cada oportunidad: etapa, responsable, última interacción, días sin movimiento y próximo paso. Buscable y exportable. |
-| 03 | **Agente IA** | Manual de operación del agente: qué puede / nunca promete, cuándo escala a un humano, valores no negociables, precios oficiales, guiones y FAQs. |
-| 04 | **Seguimientos** | La cola de reactivación — evita que conversaciones con interés real se enfríen (≈60% de los que no avanzan son recuperables). |
-| 05 | **Rendimiento por canal** | Volumen vs. conversión a cliente por canal. *Meta trae volumen; los referidos traen clientes.* |
-| 06 | **Conversión comercial** | Convierte la "caja negra" post-handoff en números: ganadas / abiertas / perdidas y **por qué** se pierden. |
-| 07 | **Tendencias** | Seis semanas de evolución — conversión, calidad de lead, tiempo sin movimiento y tiempo de cierre. |
+| # | Sección | Qué hace |
+|---|---------|----------|
+| 01 | **Panel** | Las 3 preguntas del lunes 8 a.m.: cuántos se generaron / calificaron / llegaron a ventas (embudo), qué pasó tras el *handoff*, qué canales generan **clientes**, y tendencias a 6 semanas. |
+| 02 | **Leads** | *Pipeline vivo* — tablero **kanban arrastrable** (Nuevo · Preguntó costo · Cotización · Seguimiento · Llamada · Cerrado). Arrastra una tarjeta y el valor de pipeline se recalcula y **persiste** (localStorage). Buscable y exportable a CSV. |
+| 03 | **Agente IA** | *No inventa: deriva* — **simulador de chat** contra el SOP. Responde con catálogo y precios reales; ante una regla dura (descuento, zona no servida, pedido < mínimo) sella el *handoff* con motivo y timestamp. Incluye pruebas de riesgo y bitácora de handoffs. |
+| 04 | **Seguimientos** | La cola de reactivación — evita que conversaciones con interés real se enfríen (≈60% de los que no avanzan son recuperables), del más frío al más reciente, con el mensaje listo para copiar. |
 
 ## Correr en local
 
@@ -58,10 +55,15 @@ reemplazar las estructuras de ese archivo — la interfaz no cambia.
 
 ## Funciona
 
-- **⌘K / Ctrl+K** enfoca la búsqueda; escribe para filtrar leads por nombre,
-  empresa, canal, ciudad o etapa.
-- **Exportar** descarga los leads en CSV.
-- El selector **Hoy / Semana / Mes** recalcula el embudo del Panel.
+- **Barra superior contextual** — el placeholder de búsqueda, el indicador
+  (`datos en vivo` / `sync: wa.api` / `modelo: en_vivo`) y el botón de acción
+  (`Exportar` / `+ Nuevo lead` / `Cargar SOP`) cambian según la sección.
+- **⌘K / Ctrl+K** enfoca la búsqueda; filtra leads y seguimientos en vivo.
+- **Leads**: arrastra tarjetas entre columnas → el pipeline se recalcula y
+  persiste; `+ Nuevo lead` agrega una tarjeta a *Nuevo*; exporta a CSV.
+- **Agente IA**: escribe o usa una prueba de riesgo → el agente responde con el
+  SOP y registra los handoffs.
+- **Panel**: el selector **Hoy / Semana / Mes** recalcula el embudo.
 
 ## Stack
 

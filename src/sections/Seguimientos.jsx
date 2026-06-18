@@ -5,14 +5,18 @@ const stageLabel = (s) =>
   s === 'reactivacion' ? reactivationStage.label : stages.find((x) => x.n === s)?.label || '—'
 
 // Cola de seguimiento: reactivación o sin movimiento ≥ 3 días, lo más frío primero.
-const queue = leads
+const baseQueue = leads
   .filter((l) => l.stage === 'reactivacion' || (typeof l.dias === 'number' && l.dias >= 3))
   .sort((a, b) => b.dias - a.dias)
 
 const reactScript = agent.scripts.find((s) => s.n === 6)
 
-export default function Seguimientos() {
+export default function Seguimientos({ query = '' }) {
   const [copied, setCopied] = useState(null)
+  const q = query.trim().toLowerCase()
+  const queue = !q
+    ? baseQueue
+    : baseQueue.filter((l) => [l.nombre, l.empresa, l.ciudad, l.canal].join(' ').toLowerCase().includes(q))
 
   const copy = (l) => {
     const msg = `Hola ${l.nombre.split(' ')[0]} 👋, retomando tu interés en las Ediciones Empresariales de Círculo para ${l.empresa}. ${reactScript.body.split('\n')[0]}`
@@ -27,8 +31,10 @@ export default function Seguimientos() {
     <section>
       <div className="section-head">
         <div>
-          <div className="eyebrow">Sección 04</div>
-          <h1 className="headline">Seguimientos</h1>
+          <div className="eyebrow">Seguimientos</div>
+          <h1 className="headline">
+            Nada se <span className="gold">enfría.</span>
+          </h1>
           <p className="subhead">
             La cola que evita que una conversación con interés real se enfríe. Estimas que ~60% de los
             leads que no avanzan son recuperables — aquí están, del más frío al más reciente, con el

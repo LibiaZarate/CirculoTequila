@@ -1,20 +1,27 @@
-import { useEffect, useRef, useState } from 'react'
-import { brand, nav, leads } from './data/circulo.js'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { brand, nav, kanbanCards, agent } from './data/circulo.js'
 import Panel from './sections/Panel.jsx'
 import Leads from './sections/Leads.jsx'
 import Agente from './sections/Agente.jsx'
 import Seguimientos from './sections/Seguimientos.jsx'
-import Canales from './sections/Canales.jsx'
-import Conversion from './sections/Conversion.jsx'
-import Tendencias from './sections/Tendencias.jsx'
 
-function exportLeadsCSV() {
-  const cols = ['id', 'nombre', 'empresa', 'canal', 'ciudad', 'stage', 'responsable', 'ultima', 'dias', 'proximo', 'botellas', 'valor']
+const STORAGE_KEY = 'circulo.board.v1'
+
+function loadBoard() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (raw) return JSON.parse(raw)
+  } catch {}
+  return kanbanCards
+}
+
+function exportCSV(cards) {
+  const cols = ['id', 'col', 'name', 'ciudad', 'bot', 'ocasion', 'value']
   const head = cols.join(',')
-  const rows = leads.map((l) =>
+  const rows = cards.map((c) =>
     cols
-      .map((c) => {
-        const v = l[c] == null ? '' : String(l[c]).replace(/"/g, '""')
+      .map((k) => {
+        const v = c[k] == null ? '' : String(c[k]).replace(/"/g, '""')
         return /[",\n]/.test(v) ? `"${v}"` : v
       })
       .join(','),
@@ -23,7 +30,7 @@ function exportLeadsCSV() {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = `circulo-leads-${new Date().toISOString().slice(0, 10)}.csv`
+  a.download = `circulo-pipeline-${new Date().toISOString().slice(0, 10)}.csv`
   a.click()
   URL.revokeObjectURL(url)
 }
@@ -32,9 +39,17 @@ export default function App() {
   const [section, setSection] = useState('panel')
   const [period, setPeriod] = useState('mes')
   const [query, setQuery] = useState('')
+  const [board, setBoard] = useState(loadBoard)
   const searchRef = useRef(null)
 
-  // ⌘K / Ctrl+K para enfocar la búsqueda
+  // persistencia del pipeline
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(board))
+    } catch {}
+  }, [board])
+
+  // ⌘K / Ctrl+K · Esc
   useEffect(() => {
     const onKey = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
@@ -50,19 +65,34 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  const onSearch = (v) => {
-    setQuery(v)
-    if (v && section !== 'leads' && section !== 'seguimientos') setSection('leads')
+  // limpiar búsqueda al cambiar de sección
+  useEffect(() => setQuery(''), [section])
+
+  const addLead = () => {
+    const n = board.filter((c) => c.col === 'nuevo').length + 1
+    setBoard((prev) => [
+      { id: 'L-' + Date.now().toString().slice(-5), col: 'nuevo', name: `Prospecto nuevo ${n}`, ciudad: 'wa.api', bot: '— bot', ocasion: 'sin calificar', value: 0 },
+      ...prev,
+    ])
+    setSection('leads')
   }
 
+  const topbar = useMemo(
+    () => ({
+      panel: { ph: 'Preguntar al sistema de Círculo…', pill: 'datos en vivo', btn: 'Exportar', arrow: true, action: () => exportCSV(board) },
+      leads: { ph: 'Buscar lead, región u ocasión…', pill: 'sync: wa.api', btn: '+ Nuevo lead', arrow: false, action: addLead },
+      agente: { ph: 'Probar un mensaje contra el SOP…', pill: 'modelo: en_vivo', btn: 'Cargar SOP', arrow: true, action: () => window.open(agent.materials, '_blank', 'noopener') },
+      seguimientos: { ph: 'Buscar prospecto en seguimiento…', pill: 'datos en vivo', btn: 'Exportar', arrow: true, action: () => exportCSV(board) },
+    }),
+    [board],
+  )
+  const tb = topbar[section]
+
   const sections = {
-    panel: <Panel period={period} setPeriod={setPeriod} goTo={setSection} />,
-    leads: <Leads query={query} />,
+    panel: <Panel period={period} setPeriod={setPeriod} />,
+    leads: <Leads board={board} setBoard={setBoard} query={query} />,
     agente: <Agente />,
-    seguimientos: <Seguimientos />,
-    canales: <Canales />,
-    conversion: <Conversion />,
-    tendencias: <Tendencias />,
+    seguimientos: <Seguimientos query={query} />,
   }
 
   return (
@@ -83,10 +113,7 @@ export default function App() {
             <button
               key={item.key}
               className={'nav__item' + (section === item.key ? ' is-active' : '')}
-              onClick={() => {
-                setSection(item.key)
-                if (item.key !== 'leads' && item.key !== 'seguimientos') setQuery('')
-              }}
+              onClick={() => setSection(item.key)}
             >
               <span className="nav__num">{item.n}</span>
               <span>{item.label}</span>
@@ -115,22 +142,24 @@ export default function App() {
             <input
               ref={searchRef}
               value={query}
-              onChange={(e) => onSearch(e.target.value)}
-              placeholder="Preguntar al sistema de Círculo… (busca leads, empresas, canales)"
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={tb.ph}
             />
             <span className="search__kbd">⌘K</span>
           </label>
 
           <span className="pill-live">
             <span className="dot-live" />
-            datos en vivo
+            {tb.pill}
           </span>
 
-          <button className="btn-export" onClick={exportLeadsCSV} title="Exportar leads a CSV">
-            Exportar
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-              <path d="M7 17 17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          <button className="btn-export" onClick={tb.action} title={tb.btn}>
+            {tb.btn}
+            {tb.arrow && (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+                <path d="M7 17 17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
           </button>
         </div>
 

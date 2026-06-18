@@ -38,7 +38,7 @@ function Funnel({ stages }) {
   )
 }
 
-export default function Panel({ period, setPeriod, goTo }) {
+export default function Panel({ period, setPeriod }) {
   const p = periods[period]
 
   return (
@@ -157,13 +157,6 @@ export default function Panel({ period, setPeriod, goTo }) {
                   <span>{r.value}</span>
                 </div>
               ))}
-              <button
-                className="bar__meta"
-                style={{ marginTop: 12, marginLeft: 0, color: 'var(--gold)' }}
-                onClick={() => goTo('conversion')}
-              >
-                ver conversión comercial →
-              </button>
             </div>
           </div>
 

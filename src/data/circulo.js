@@ -248,13 +248,67 @@ export const mondayQuestions = [
 // ── Navegación ────────────────────────────────────────────────────────────
 export const nav = [
   { n: '01', key: 'panel', label: 'Panel' },
-  { n: '02', key: 'leads', label: 'Jardín de leads' },
+  { n: '02', key: 'leads', label: 'Leads' },
   { n: '03', key: 'agente', label: 'Agente IA' },
   { n: '04', key: 'seguimientos', label: 'Seguimientos' },
-  { n: '05', key: 'canales', label: 'Rendimiento por canal' },
-  { n: '06', key: 'conversion', label: 'Conversión comercial' },
-  { n: '07', key: 'tendencias', label: 'Tendencias' },
 ]
 
 export const peso = (n) =>
   n == null ? '—' : new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(n)
+
+// Formato compacto para tarjetas y badges: 225000 → $225k · 1240000 → $1.24M
+export const pesoCompact = (n) => {
+  if (n == null) return '—'
+  if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(2).replace(/\.?0+$/, '') + 'M'
+  if (n >= 1000) return '$' + Math.round(n / 1000) + 'k'
+  return '$' + n
+}
+
+// ── Leads · pipeline vivo (kanban arrastrable) ────────────────────────────
+export const kanbanColumns = [
+  { key: 'nuevo', label: 'Nuevo', accent: '#6aa6dd' },
+  { key: 'costo', label: 'Preguntó costo', accent: '#4ccaa0' },
+  { key: 'cotizacion', label: 'Cotización', accent: '#7fce7a' },
+  { key: 'seguimiento', label: 'Seguimiento', accent: '#d8c265' },
+  { key: 'llamada', label: 'Llamada', accent: '#e9b65d' },
+  { key: 'cerrado', label: 'Cerrado', accent: '#dc9456' },
+]
+
+export const kanbanCards = [
+  { id: 'L-01', col: 'nuevo', name: 'Hacienda Soltera', ciudad: 'Guadalajara', bot: '100 bot', ocasion: 'boda · sep', value: 225000 },
+  { id: 'L-02', col: 'nuevo', name: 'Rocío Mendívil', ciudad: 'Zapopan', bot: '24 bot', ocasion: 'regalo corporativo', value: 54000 },
+  { id: 'L-03', col: 'nuevo', name: 'Bar La Cantera', ciudad: 'Tlaquepaque', bot: '40 bot', ocasion: 'reventa', value: 90000 },
+  { id: 'L-04', col: 'nuevo', name: 'Iván Robles', ciudad: 'Tonalá', bot: '12 bot', ocasion: 'cumpleaños', value: 19200 },
+  { id: 'L-05', col: 'costo', name: 'Marisol Vega', ciudad: 'Guadalajara', bot: '20 bot', ocasion: 'aniversario', value: 45000 },
+  { id: 'L-06', col: 'costo', name: 'Don Beto', ciudad: 'Chapala', bot: '60 bot', ocasion: 'boda · 8 mesas', value: 135000 },
+  { id: 'L-07', col: 'costo', name: 'Tienda Sur', ciudad: 'Colima', bot: '80 bot', ocasion: 'reventa mayoreo', value: 180000 },
+  { id: 'L-08', col: 'cotizacion', name: 'Lucía Ramírez', ciudad: 'Zapopan', bot: '24 bot', ocasion: 'reposado · regalo', value: 69600 },
+  { id: 'L-09', col: 'cotizacion', name: 'Grupo Ágave', ciudad: 'Guadalajara', bot: '40 bot', ocasion: 'evento empresa', value: 90000 },
+  { id: 'L-10', col: 'cotizacion', name: 'Pablo Cortés', ciudad: 'Puerto Vallarta', bot: '12 bot', ocasion: 'cena privada', value: 27000 },
+  { id: 'L-11', col: 'seguimiento', name: 'Fernanda Lozano', ciudad: 'Guadalajara', bot: '20 bot', ocasion: 'pidió tiempo', value: 45000 },
+  { id: 'L-12', col: 'seguimiento', name: 'Rest. Maguey', ciudad: 'Tequila', bot: '40 bot', ocasion: 'carta de bebidas', value: 104000 },
+  { id: 'L-13', col: 'llamada', name: 'Hotel Real', ciudad: 'Guadalajara', bot: '120 bot', ocasion: 'agenda vendedor', value: 270000 },
+  { id: 'L-14', col: 'cerrado', name: 'Evento San Luis', ciudad: 'San Luis Potosí', bot: '120 bot', ocasion: 'joven · anticipo ✓', value: 312000 },
+]
+
+// ── Agente IA · simulador contra el SOP ───────────────────────────────────
+export const agentSim = {
+  session: '#4471',
+  seed: [
+    { who: 'user', text: '¿Cuánto cuesta una botella?', t: '10:02' },
+    { who: 'agent', text: '¡Va! Depende de la expresión: Blanco, Joven o Reposado. 750 ml desde $2,250 MXN. Para un evento te conviene caja — rinde mejor y cuidamos el precio por volumen.', t: '10:02' },
+    { who: 'user', text: '¿Me das un descuento del 20%?', t: '10:04' },
+    { who: 'agent', text: 'Ese ajuste lo ve directo el equipo. Te conecto con Kenia para cerrar el precio. ⊕', t: '10:04', handoff: true },
+  ],
+  risks: [
+    { label: 'Pídele descuento', send: '¿Me das un 20% de descuento?' },
+    { label: 'Zona no servida', send: '¿Hacen envíos a Sinaloa?' },
+    { label: 'Solo 3 botellas', send: 'Quiero comprar solo 3 botellas' },
+    { label: '"Está muy caro"', send: 'Está muy caro, ¿no tienes algo más barato?' },
+  ],
+  handoffLog: [
+    { reason: 'descuento > 10%', t: '10:04' },
+    { reason: 'zona no servida (sinaloa)', t: '09:51' },
+    { reason: 'pedido < mínimo (3 bot)', t: '09:38' },
+  ],
+}
