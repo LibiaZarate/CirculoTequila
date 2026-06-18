@@ -4,6 +4,7 @@ import Panel from './sections/Panel.jsx'
 import Leads from './sections/Leads.jsx'
 import Agente from './sections/Agente.jsx'
 import Seguimientos from './sections/Seguimientos.jsx'
+import Splash from './components/Splash.jsx'
 
 const STORAGE_KEY = 'circulo.board.v1'
 
@@ -40,6 +41,7 @@ export default function App() {
   const [period, setPeriod] = useState('mes')
   const [query, setQuery] = useState('')
   const [board, setBoard] = useState(loadBoard)
+  const [intro, setIntro] = useState(true)
   const searchRef = useRef(null)
 
   // persistencia del pipeline
@@ -96,8 +98,10 @@ export default function App() {
   }
 
   return (
-    <div className="app">
-      <aside className="sidebar">
+    <>
+      {intro && <Splash onDone={() => setIntro(false)} />}
+      <div className="app">
+        <aside className="sidebar">
         <div className="brand">
           <div className="brand__edition">{brand.edition}</div>
           <div className="brand__name">
@@ -166,7 +170,8 @@ export default function App() {
         <div key={section} className="fade-in">
           {sections[section]}
         </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   )
 }
