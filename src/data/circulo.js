@@ -33,10 +33,10 @@ export const periods = {
     metaPct: 12,
     globalPct: 0,
     stages: [
-      { key: 'gen', label: 'Generados', value: 4, dot: 'green', sub: 'leads de hoy', note: '+1 vs ayer' },
-      { key: 'conv', label: 'En conversación', value: 3, dot: 'green', sub: 'respondió al 1er toque', note: 'IA · <2 min' },
+      { key: 'gen', label: 'Generados', value: 4, dot: 'blue', sub: 'leads de hoy', note: '+1 vs ayer' },
+      { key: 'conv', label: 'En conversación', value: 3, dot: 'teal', sub: 'respondió al 1er toque', note: 'IA · <2 min' },
       { key: 'cal', label: 'Calificados', value: 1, dot: 'gold', sub: 'listos para venta', note: 'calidad 0.74' },
-      { key: 'sales', label: 'Enviados a ventas', value: 1, dot: 'red', sub: 'transferidos a comercial', note: 'handoff sellado' },
+      { key: 'sales', label: 'Enviados a ventas', value: 1, dot: 'pink', sub: 'transferidos a comercial', note: 'handoff sellado' },
       { key: 'won', label: 'Cerradas', value: 0, dot: 'green', sub: 'ventas', note: 'pipeline activo' },
     ],
   },
@@ -47,10 +47,10 @@ export const periods = {
     metaPct: 12,
     globalPct: 7.1,
     stages: [
-      { key: 'gen', label: 'Generados', value: 14, dot: 'green', sub: 'leads del periodo', note: '+2 vs sem. previa' },
-      { key: 'conv', label: 'En conversación', value: 10, dot: 'green', sub: 'respondió al 1er toque', note: 'IA · <2 min' },
+      { key: 'gen', label: 'Generados', value: 14, dot: 'blue', sub: 'leads del periodo', note: '+2 vs sem. previa' },
+      { key: 'conv', label: 'En conversación', value: 10, dot: 'teal', sub: 'respondió al 1er toque', note: 'IA · <2 min' },
       { key: 'cal', label: 'Calificados', value: 6, dot: 'gold', sub: 'listos para venta', note: 'calidad 0.72' },
-      { key: 'sales', label: 'Enviados a ventas', value: 2, dot: 'red', sub: 'transferidos a comercial', note: 'handoff sellado' },
+      { key: 'sales', label: 'Enviados a ventas', value: 2, dot: 'pink', sub: 'transferidos a comercial', note: 'handoff sellado' },
       { key: 'won', label: 'Cerradas', value: 1, dot: 'green', sub: '$46.2k · ventas', note: 'meta 12%' },
     ],
   },
@@ -61,10 +61,10 @@ export const periods = {
     metaPct: 12,
     globalPct: 5.4,
     stages: [
-      { key: 'gen', label: 'Generados', value: 56, dot: 'green', sub: 'leads del periodo', note: '+9 vs mes previo' },
-      { key: 'conv', label: 'En conversación', value: 41, dot: 'green', sub: 'respondió al 1er toque', note: 'IA · <2 min' },
+      { key: 'gen', label: 'Generados', value: 56, dot: 'blue', sub: 'leads del periodo', note: '+9 vs mes previo' },
+      { key: 'conv', label: 'En conversación', value: 41, dot: 'teal', sub: 'respondió al 1er toque', note: 'IA · <2 min' },
       { key: 'cal', label: 'Calificados', value: 22, dot: 'gold', sub: 'listos para venta', note: 'calidad 0.72' },
-      { key: 'sales', label: 'Enviados a ventas', value: 9, dot: 'red', sub: 'transferidos a comercial', note: 'handoff sellado' },
+      { key: 'sales', label: 'Enviados a ventas', value: 9, dot: 'pink', sub: 'transferidos a comercial', note: 'handoff sellado' },
       { key: 'won', label: 'Cerradas', value: 3, dot: 'green', sub: '$138.6k · ventas', note: 'global 5.4% · meta 12%' },
     ],
   },
@@ -79,7 +79,7 @@ export const channels = [
   { name: 'Eventos / Expos', leads: 2, quality: 'alta', pct: 28, tone: 'teal' },
   { name: 'Sitio web', leads: 6, quality: 'media', pct: 12, tone: 'gold' },
   { name: 'Meta Ads · WhatsApp', leads: 46, quality: 'media', pct: 6, tone: 'golddim' },
-  { name: 'Mailing', leads: 1, quality: 'baja', pct: 4, tone: 'muted' },
+  { name: 'Mailing', leads: 1, quality: 'baja', pct: 4, tone: 'orange' },
 ]
 export const channelsCaption = 'Meta trae volumen; los referidos y eventos traen los clientes.'
 

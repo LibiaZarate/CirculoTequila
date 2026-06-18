@@ -44,9 +44,10 @@ export function TrendLine({ data, color = '#e6b35a', height = 170 }) {
       </defs>
       <path d={area} fill={`url(#${id})`} />
       <path d={d} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx={last[0]} cy={last[1]} r="9" fill={color} opacity="0.18" />
-      <circle cx={last[0]} cy={last[1]} r="4.5" fill={color} />
-      <circle cx={last[0]} cy={last[1]} r="4.5" fill="#fff" opacity="0.25" />
+      {/* punto luminoso de núcleo blanco — el detalle de firma */}
+      <circle cx={last[0]} cy={last[1]} r="13" fill={color} opacity="0.16" />
+      <circle cx={last[0]} cy={last[1]} r="7" fill={color} opacity="0.55" />
+      <circle cx={last[0]} cy={last[1]} r="4.2" fill="#fff" />
     </svg>
   )
 }

@@ -21,7 +21,7 @@ function Funnel({ stages }) {
             {i > 0 && (
               <div className={'fconv' + (prevLeak ? ' leak' : '')}>
                 <b>{isFinite(conv) ? conv : 0}%</b>
-                {prevLeak ? <span className="leak-tag">caja negra</span> : <span className="fconv__arrow">→</span>}
+                {prevLeak ? <span className="leak-tag">fuga</span> : <span className="fconv__arrow">→</span>}
               </div>
             )}
             <div className="fstage__label">

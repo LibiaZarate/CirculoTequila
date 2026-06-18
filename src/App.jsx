@@ -70,7 +70,10 @@ export default function App() {
       <aside className="sidebar">
         <div className="brand">
           <div className="brand__edition">{brand.edition}</div>
-          <div className="brand__name">{brand.name}</div>
+          <div className="brand__name">
+            {brand.name}
+            <span className="reg">®</span>
+          </div>
           <div className="brand__sub">{brand.sub}</div>
           <div className="brand__tag">{brand.tagline}</div>
         </div>
@@ -92,13 +95,13 @@ export default function App() {
         </nav>
 
         <div className="sidebar__foot">
-          ref: <b>{brand.ref}</b>
-          <br />
-          {brand.source}
-          <br />
-          {brand.geo}
-          <br />
-          {brand.norte}
+          <span className="foot-live">
+            <span className="dot-live" />
+            datos en vivo · hace 4 min
+          </span>
+          <span className="foot-ref">
+            {brand.ref} · {brand.geo}
+          </span>
         </div>
       </aside>
 
