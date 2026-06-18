@@ -251,6 +251,7 @@ export const nav = [
   { n: '02', key: 'leads', label: 'Leads' },
   { n: '03', key: 'agente', label: 'Agente IA' },
   { n: '04', key: 'seguimientos', label: 'Seguimientos' },
+  { n: '05', key: 'arquitectura', label: 'Arquitectura' },
 ]
 
 export const peso = (n) =>
@@ -290,6 +291,284 @@ export const kanbanCards = [
   { id: 'L-13', col: 'llamada', name: 'Hotel Real', ciudad: 'Guadalajara', bot: '120 bot', ocasion: 'agenda vendedor', value: 270000 },
   { id: 'L-14', col: 'cerrado', name: 'Evento San Luis', ciudad: 'San Luis Potosí', bot: '120 bot', ocasion: 'joven · anticipo ✓', value: 312000 },
 ]
+
+// ── Contexto que viaja · por lead (Arquitectura §08) ──────────────────────
+// Cada oportunidad lleva un bloque que se regenera tras cada interacción:
+// qué pidió, qué objetó, qué se le prometió y qué espera. El handoff deja de
+// ser un cold restart. Se indexa por lead_id para sobrevivir al kanban.
+export const leadContext = {
+  'L-01': {
+    linea: 'empresarial', empresa: 'Hacienda Soltera', cargo: 'Coordinación de eventos', authority: 'decisor',
+    volumen: 100, proposito: 'Botella de regalo para boda', fechaObjetivo: '2026-09-12', budget: 'estimado', icpFit: 88,
+    canalPreferido: 'whatsapp', stakeholders: ['eventos', 'dirección'],
+    ultimaPromesa: 'Enviar ejemplos de personalización para boda', promesaStatus: 'pendiente',
+    objecion: 'timing_evento', nextAction: 'Compartir casos + confirmar fecha de arte', touches: 1,
+    events: [
+      { t: 'hace 6 d', e: 'Lead capturado · referido' },
+      { t: 'hace 6 d', e: 'Primer toque del agente · <2 min' },
+      { t: 'hace 4 d', e: 'Calificado · empresa + volumen + propósito' },
+      { t: 'hace 1 d', e: 'Solicitó ejemplos de personalización' },
+    ],
+  },
+  'L-02': {
+    linea: 'empresarial', empresa: 'Rocío Mendívil · Corp.', cargo: 'Gerente de marketing', authority: 'influencer',
+    volumen: 24, proposito: 'Regalo corporativo fin de año', fechaObjetivo: '2026-12-05', budget: 'desconocido', icpFit: 72,
+    canalPreferido: 'whatsapp', stakeholders: ['marketing'],
+    ultimaPromesa: 'Mandar lista de precios de ediciones', promesaStatus: 'cumplida',
+    objecion: null, nextAction: 'Confirmar volumen y propósito exacto', touches: 0,
+    events: [
+      { t: 'hace 2 d', e: 'Lead capturado · Meta Ads' },
+      { t: 'hace 2 d', e: 'Primer toque del agente' },
+      { t: 'hace 1 d', e: 'Pidió precios de ediciones' },
+    ],
+  },
+  'L-03': {
+    linea: 'retail', empresa: 'Bar La Cantera', cargo: 'Propietario', authority: 'decisor',
+    volumen: 40, proposito: 'Reventa en barra', fechaObjetivo: null, budget: 'desconocido', icpFit: 54,
+    canalPreferido: 'whatsapp', stakeholders: [],
+    ultimaPromesa: 'Explicar esquema de reventa', promesaStatus: 'pendiente',
+    objecion: 'vs_otro_tequila', nextAction: 'Validar si es retail o mayoreo', touches: 0,
+    events: [
+      { t: 'hace 1 d', e: 'Lead capturado · Meta Ads' },
+      { t: 'hace 1 d', e: 'Primer toque del agente' },
+    ],
+  },
+  'L-04': {
+    linea: 'retail', empresa: 'Iván Robles', cargo: 'Consumidor final', authority: 'decisor',
+    volumen: 12, proposito: 'Regalo de cumpleaños', fechaObjetivo: '2026-07-20', budget: 'confirmado', icpFit: 48,
+    canalPreferido: 'whatsapp', stakeholders: [],
+    ultimaPromesa: null, promesaStatus: null,
+    objecion: 'minimo_volumen', nextAction: 'Ofrecer línea regular o 12 personalizadas', touches: 0,
+    events: [
+      { t: 'hace 2 h', e: 'Lead capturado · web' },
+      { t: 'hace 2 h', e: 'Primer toque del agente' },
+    ],
+  },
+  'L-05': {
+    linea: 'empresarial', empresa: 'Marisol Vega S.A.', cargo: 'Relaciones públicas', authority: 'influencer',
+    volumen: 20, proposito: 'Aniversario de empresa', fechaObjetivo: '2026-10-01', budget: 'estimado', icpFit: 76,
+    canalPreferido: 'whatsapp', stakeholders: ['rr.pp.', 'compras'],
+    ultimaPromesa: 'Cotización formal de 20 botellas', promesaStatus: 'pendiente',
+    objecion: 'precio_premium', nextAction: 'Enviar cotización + reframe a valor', touches: 1,
+    events: [
+      { t: 'hace 5 d', e: 'Lead capturado · Meta Ads' },
+      { t: 'hace 5 d', e: 'Calificado · empresa + propósito' },
+      { t: 'hace 2 d', e: 'Preguntó costo de 20 botellas' },
+    ],
+  },
+  'L-06': {
+    linea: 'empresarial', empresa: 'Eventos Don Beto', cargo: 'Organizador', authority: 'decisor',
+    volumen: 60, proposito: 'Boda · 8 mesas premium', fechaObjetivo: '2026-11-15', budget: 'estimado', icpFit: 81,
+    canalPreferido: 'whatsapp', stakeholders: ['novios'],
+    ultimaPromesa: 'Propuesta con presentación 750ml', promesaStatus: 'pendiente',
+    objecion: 'tiempos_personalizacion', nextAction: 'Explicar calendario de arte vs. fecha', touches: 1,
+    events: [
+      { t: 'hace 6 d', e: 'Lead capturado · referido' },
+      { t: 'hace 4 d', e: 'Calificado · volumen + fecha' },
+      { t: 'hace 2 d', e: 'Preguntó costo y tiempos' },
+    ],
+  },
+  'L-07': {
+    linea: 'retail', empresa: 'Tienda Sur', cargo: 'Comprador', authority: 'decisor',
+    volumen: 80, proposito: 'Reventa mayoreo punto turístico', fechaObjetivo: null, budget: 'estimado', icpFit: 66,
+    canalPreferido: 'email', stakeholders: ['compras'],
+    ultimaPromesa: 'Lista de precios mayoreo', promesaStatus: 'cumplida',
+    objecion: 'precio_premium', nextAction: 'Definir rotación esperada y presentación', touches: 0,
+    events: [
+      { t: 'hace 4 d', e: 'Lead capturado · expo' },
+      { t: 'hace 3 d', e: 'Solicitó precios mayoreo' },
+    ],
+  },
+  'L-08': {
+    linea: 'empresarial', empresa: 'Lucía Ramírez · Estudio', cargo: 'Dirección', authority: 'decisor',
+    volumen: 24, proposito: 'Regalo a clientes clave (Reposado)', fechaObjetivo: '2026-09-30', budget: 'confirmado', icpFit: 90,
+    canalPreferido: 'whatsapp', stakeholders: ['dirección'],
+    ultimaPromesa: 'Enviar cotización formal Reposado 750ml', promesaStatus: 'pendiente',
+    objecion: null, nextAction: 'Cotización + propuesta de arte', touches: 0,
+    events: [
+      { t: 'hace 8 d', e: 'Lead capturado · referido' },
+      { t: 'hace 6 d', e: 'Calificado · empresa + volumen + fecha' },
+      { t: 'hace 3 d', e: 'Pidió cotización formal' },
+      { t: 'hace 1 d', e: 'Cotización en preparación' },
+    ],
+  },
+  'L-09': {
+    linea: 'empresarial', empresa: 'Grupo Ágave', cargo: 'Gerente comercial', authority: 'decisor',
+    volumen: 40, proposito: 'Evento de empresa', fechaObjetivo: '2026-10-20', budget: 'estimado', icpFit: 84,
+    canalPreferido: 'email', stakeholders: ['comercial', 'compras'],
+    ultimaPromesa: 'Propuesta con dos conceptos de arte', promesaStatus: 'pendiente',
+    objecion: 'autoridad_compras', nextAction: 'Sumar a compras a la conversación', touches: 1,
+    events: [
+      { t: 'hace 7 d', e: 'Lead capturado · web' },
+      { t: 'hace 5 d', e: 'Calificado · empresa + propósito + volumen' },
+      { t: 'hace 2 d', e: 'Solicitó propuesta' },
+    ],
+  },
+  'L-10': {
+    linea: 'empresarial', empresa: 'Pablo Cortés', cargo: 'Anfitrión', authority: 'decisor',
+    volumen: 12, proposito: 'Cena privada', fechaObjetivo: '2026-08-10', budget: 'confirmado', icpFit: 70,
+    canalPreferido: 'whatsapp', stakeholders: [],
+    ultimaPromesa: 'Cotización 12 botellas 375ml', promesaStatus: 'cumplida',
+    objecion: null, nextAction: 'Confirmar arte y anticipo', touches: 0,
+    events: [
+      { t: 'hace 5 d', e: 'Lead capturado · Meta Ads' },
+      { t: 'hace 4 d', e: 'Calificado' },
+      { t: 'hace 2 d', e: 'Cotización enviada' },
+    ],
+  },
+  'L-11': {
+    linea: 'empresarial', empresa: 'Fernanda Lozano · Corp.', cargo: 'Compras', authority: 'gatekeeper',
+    volumen: 20, proposito: 'Reconocimientos internos', fechaObjetivo: '2026-09-05', budget: 'estimado', icpFit: 64,
+    canalPreferido: 'whatsapp', stakeholders: ['rr.hh.', 'dirección'],
+    ultimaPromesa: 'Dar tiempo para decisión interna', promesaStatus: 'pendiente',
+    objecion: 'autoridad_compras', nextAction: 'Reactivar: ¿sigue siendo prioridad?', touches: 2,
+    events: [
+      { t: 'hace 12 d', e: 'Lead capturado · Meta Ads' },
+      { t: 'hace 10 d', e: 'Calificado' },
+      { t: 'hace 6 d', e: 'Pidió tiempo para validar internamente' },
+      { t: 'hace 4 d', e: 'Toque de reactivación 02 · sin respuesta' },
+    ],
+  },
+  'L-12': {
+    linea: 'turismo', empresa: 'Rest. Maguey', cargo: 'Gerente de A&B', authority: 'decisor',
+    volumen: 40, proposito: 'Carta de bebidas premium', fechaObjetivo: null, budget: 'estimado', icpFit: 74,
+    canalPreferido: 'whatsapp', stakeholders: ['a&b', 'gerencia'],
+    ultimaPromesa: 'Enviar ficha de producto y presentación', promesaStatus: 'pendiente',
+    objecion: 'tiempos_personalizacion', nextAction: 'Agendar degustación con gerencia', touches: 1,
+    events: [
+      { t: 'hace 9 d', e: 'Lead capturado · expo' },
+      { t: 'hace 6 d', e: 'Calificado · establecimiento + volumen' },
+      { t: 'hace 3 d', e: 'Pidió ficha de producto' },
+    ],
+  },
+  'L-13': {
+    linea: 'turismo', empresa: 'Hotel Real', cargo: 'Gerente de compras', authority: 'decisor',
+    volumen: 120, proposito: 'Amenidad VIP huéspedes', fechaObjetivo: '2026-12-01', budget: 'confirmado', icpFit: 92,
+    canalPreferido: 'email', stakeholders: ['compras', 'experiencia', 'gerencia'],
+    ultimaPromesa: 'Agendar llamada con representante comercial', promesaStatus: 'pendiente',
+    objecion: null, nextAction: 'Vendedor confirma cita · orden de compra', touches: 0,
+    events: [
+      { t: 'hace 10 d', e: 'Lead capturado · referido' },
+      { t: 'hace 7 d', e: 'Calificado · establecimiento + volumen + ciudad' },
+      { t: 'hace 3 d', e: 'Solicitó llamada con asesor' },
+      { t: 'hace 1 d', e: 'Handoff a comercial · contexto sellado' },
+    ],
+  },
+  'L-14': {
+    linea: 'empresarial', empresa: 'Evento San Luis', cargo: 'Coordinación', authority: 'decisor',
+    volumen: 120, proposito: 'Evento corporativo (Joven)', fechaObjetivo: '2026-07-01', budget: 'confirmado', icpFit: 95,
+    canalPreferido: 'whatsapp', stakeholders: ['dirección', 'compras'],
+    ultimaPromesa: 'Confirmar producción tras anticipo', promesaStatus: 'cumplida',
+    objecion: null, nextAction: 'Producción y entrega · cierre administrativo', touches: 0,
+    events: [
+      { t: 'hace 18 d', e: 'Lead capturado · referido' },
+      { t: 'hace 14 d', e: 'Calificado + transferido a comercial' },
+      { t: 'hace 9 d', e: 'Propuesta aprobada' },
+      { t: 'hace 5 d', e: 'Anticipo 50% recibido · ganado' },
+    ],
+  },
+}
+
+// Criterios de la compuerta (empresarial) para medir handoff_completeness
+export const gateFields = ['empresa', 'volumen', 'proposito', 'ciudad', 'fechaObjetivo']
+
+// ── Arquitectura comercial (documento azxion · v.2026.06) ─────────────────
+export const arquitectura = {
+  meta: { version: 'v.2026.06', author: 'azxion', prepared: 'Kenia Torres · Círculo Tequila' },
+  sintesis:
+    'Círculo tiene un proceso multicanal premium que se ve sano en la superficie. La fuga es estructural y vive en un solo punto: el handoff a ventas, donde el dato deja de existir. La trazabilidad debe ser una propiedad del sistema, no una tarea semanal.',
+  fugas: [
+    { n: 1, title: 'Respuesta tardía', body: 'Una sola persona atiende; los leads de noche o fin de semana esperan al día hábil. En WhatsApp la conversión cae vertical tras los primeros minutos.' },
+    { n: 2, title: 'Transferencia demasiado temprana', body: 'Al abrir el criterio para que ventas entre desde las primeras señales, se diluyó qué es un lead calificado. Ventas recibe oportunidades a medio cocer.' },
+    { n: 3, title: 'Sin trazabilidad post-handoff', body: 'Transferida la oportunidad, desaparece del radar: ni estatus ni motivo de pérdida. Es la fuga más cara — y la que el negocio nombró como su dolor principal.' },
+  ],
+  principios: [
+    { n: '01', title: 'Eventos, no estados', body: 'Cada acción se guarda como evento inmutable con timestamp. El estatus se deriva del log; cada lead es reconstruible.' },
+    { n: '02', title: 'Una sola fuente de verdad', body: 'WhatsApp, web, correos y Sheets dejan de ser silos: todos alimentan un único registro.' },
+    { n: '03', title: 'Listas cerradas con escape', body: 'Canal, objeción, motivo de pérdida: taxonomías cerradas con “otro” + texto a cola de revisión.' },
+    { n: '04', title: 'Contexto que viaja', body: 'Cada oportunidad lleva un bloque: qué pidió, qué objetó, qué se le prometió y qué espera. El handoff deja de ser un cold restart.' },
+    { n: '05', title: 'El agente mide interés, no ventas', body: 'Califica, nutre y agenda. El cierre, el precio especial y el inventario los confirma un humano.' },
+    { n: '06', title: 'Aditivo, no destructivo', body: 'Campos y taxonomías se agregan con versión; nunca se reescribe historia. Crecer no cuesta tirar datos.' },
+  ],
+  canales: [
+    { canal: 'Empresarial', icp: 'Dir./gerente comercial, mkt o RR.PP. que busca regalos corporativos premium', senal: 'Empresa, cargo, volumen (≥12), propósito, fecha', rol: 'Califica a fondo + agenda; nunca compromete arte ni descuento', prioridad: 'alta' },
+    { canal: 'Turismo', icp: 'Gerencia / compras / experiencia de hoteles y resorts de alta gama', senal: 'Establecimiento, volumen, modalidad (orden de compra), ciudad', rol: 'Identifica oportunidad y deriva a representante', prioridad: 'alta' },
+    { canal: 'Retail', icp: 'Consumidor final y turista que busca regalo o recuerdo premium', senal: 'Presentación, intención de compra, ubicación / punto de venta', rol: 'Informa, recomienda presentación y deriva a punto de venta', prioridad: 'media' },
+    { canal: 'Digital / Amazon', icp: 'Comprador digital que busca conveniencia y entrega confiable', senal: 'Producto, presentación, intención de compra directa', rol: 'Informa y orienta al canal de compra', prioridad: 'media-baja' },
+  ],
+  zonas: [
+    {
+      zona: 'Marketing', tone: 'teal',
+      etapas: [
+        { n: 1, label: 'Lead nuevo', senal: 'Responde el primer mensaje o interactúa con la info.' },
+        { n: 2, label: 'En conversación', senal: 'Hace preguntas, pide info o comparte detalles del proyecto.' },
+        { n: 3, label: 'Calificado', senal: 'Comparte empresa, objetivo, volumen, ciudad o fecha.' },
+        { n: 4, label: 'Interesado', senal: 'Pide avanzar, conocer el proceso o hablar con un asesor.' },
+      ],
+    },
+    {
+      zona: 'Compuerta · MQL → SQL', tone: 'gold', gate: true,
+      etapas: [{ n: '→', label: 'MQL → SQL', senal: 'Cumple criterios mínimos del canal (§06). Solo aquí se transfiere.' }],
+    },
+    {
+      zona: 'Comercial', tone: 'pink',
+      etapas: [
+        { n: 5, label: 'Transferido a vendedor', senal: 'El vendedor valida el proyecto y presenta propuesta.' },
+        { n: 6, label: 'Propuesta aprobada', senal: 'El cliente acepta condiciones y confirma intención.' },
+        { n: 7, label: 'Anticipo recibido', senal: 'Se confirma el 50% de anticipo.' },
+        { n: 8, label: 'Brief completado', senal: 'El cliente entrega la información para personalizar.' },
+        { n: 9, label: 'Diseño autorizado', senal: 'El cliente aprueba el arte final.' },
+        { n: 10, label: 'Producción y entrega', senal: 'Pedido producido, entregado y cerrado (20 días hábiles).' },
+      ],
+    },
+  ],
+  gate: [
+    { criterio: 'Empresa y cargo', campo: 'empresa · authority', umbral: 'Decisor, influencer o gatekeeper.' },
+    { criterio: 'Volumen estimado', campo: 'volumen', umbral: 'Mínimo 12. Por debajo: nutrición / retail.' },
+    { criterio: 'Propósito', campo: 'proposito', umbral: 'Evento, reconocimiento, regalo corporativo.' },
+    { criterio: 'Ciudad', campo: 'ciudad', umbral: 'Logística y asignación al representante.' },
+    { criterio: 'Fecha objetivo', campo: 'fechaObjetivo', umbral: 'Contra los 20 días hábiles post-arte.' },
+    { criterio: 'Señal de presupuesto', campo: 'budget', umbral: 'confirmado · estimado · desconocido. Orienta, no frena.' },
+  ],
+  objeciones: [
+    { cat: 'precio_premium', tipica: '“Está caro”', marco: 'Reframe a valor percibido del regalo y a la imagen de marca del cliente.' },
+    { cat: 'vs_otro_tequila', tipica: '“Otro tequila cuesta menos”', marco: 'Diferenciar por ultra premium, personalización y experiencia, no por litro.' },
+    { cat: 'autoridad_compras', tipica: '“Tengo que consultar con dirección”', marco: 'Mapear el proceso interno y sumar al decisor a la conversación.' },
+    { cat: 'timing_evento', tipica: '“Lo dejamos para después del evento”', marco: 'Cuantificar los 20 días hábiles vs. la fecha; crear urgencia real.' },
+    { cat: 'minimo_volumen', tipica: '“Quiero menos de 12 botellas”', marco: 'Ofrecer línea regular o explorar fecha futura con volumen.' },
+    { cat: 'tiempos_personalizacion', tipica: '“¿Llega a tiempo el arte?”', marco: 'Explicar el proceso de diseño y el calendario contra la fecha objetivo.' },
+    { cat: 'desconfianza_marca', tipica: '“No los conozco”', marco: 'Casos, ejemplos de proyectos y prueba social.' },
+  ],
+  motivosPerdida: [
+    'sin_respuesta / falta de seguimiento',
+    'precio / presupuesto',
+    'timing del evento',
+    'volumen bajo (< mínimo 12)',
+    'zona no servida',
+    'eligió competidor / alternativa',
+    'sin decisor / autoridad',
+  ],
+  cadencia: [
+    { toque: '01', gap: '+0 d', contenido: 'Respuesta directa + ejemplos de personalización', meta: 'dar valor' },
+    { toque: '02', gap: '+2 d', contenido: 'Recordatorio + caso de un proyecto similar', meta: 'construir confianza' },
+    { toque: '03', gap: '+5 d', contenido: 'Pregunta por la fecha del evento / volumen', meta: 'calificar' },
+    { toque: '04', gap: '+9 d', contenido: 'Valor puro (sin pedir nada): idea de concepto', meta: 'mantener calor' },
+    { toque: '05', gap: '+14 d', contenido: '¿Sigue siendo prioridad para tu evento?', meta: 'pedir decisión' },
+    { toque: '06+', gap: '+30/60 d', contenido: 'Reactivación por temporada (fin de año, fechas clave)', meta: 're-engage' },
+  ],
+  telemetria: [
+    { q: '1 · ¿Cuántos generamos, calificaron y llegaron a ventas?', m: 'Volumen por canal · MQL→SQL rate · nº transferidos · % SLA de 1ª respuesta.' },
+    { q: '2 · ¿Qué pasó con los transferidos y su estatus?', m: 'Estatus post-handoff en vivo · ciclo a cierre · motivos de pérdida · oportunidades estancadas.' },
+    { q: '3 · ¿Qué canales generan clientes, no solo conversaciones?', m: 'Conversión a venta por fuente · CPL · valor por canal.' },
+  ],
+  dashboard: [
+    { seccion: 'Resumen del embudo', muestra: 'Leads, en conversación, calificados, enviados, abiertos, ganados.', responde: 'pregunta 1' },
+    { seccion: 'Seguimiento y estado', muestra: 'Cada lead: responsable, última interacción, tiempo sin movimiento, próximo paso.', responde: 'pregunta 2' },
+    { seccion: 'Rendimiento por canal', muestra: 'Meta, web, referidos, mailing, expos: cantidad, calidad y conversión.', responde: 'pregunta 3' },
+    { seccion: 'Conversión comercial', muestra: 'Oportunidades transferidas, estatus, motivos de pérdida, ventas y tiempos.', responde: 'pregunta 2' },
+    { seccion: 'Tendencias', muestra: 'Comparativos semana/mes, evolución de conversión, cuellos de botella.', responde: 'las tres' },
+  ],
+}
 
 // ── Agente IA · simulador contra el SOP ───────────────────────────────────
 export const agentSim = {

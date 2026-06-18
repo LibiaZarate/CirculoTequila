@@ -17,9 +17,10 @@ comercial).
 | # | Sección | Qué hace |
 |---|---------|----------|
 | 01 | **Panel** | Las 3 preguntas del lunes 8 a.m.: cuántos se generaron / calificaron / llegaron a ventas (embudo), qué pasó tras el *handoff*, qué canales generan **clientes**, y tendencias a 6 semanas. |
-| 02 | **Leads** | *Pipeline vivo* — tablero **kanban arrastrable** (Nuevo · Preguntó costo · Cotización · Seguimiento · Llamada · Cerrado). Arrastra una tarjeta y el valor de pipeline se recalcula y **persiste** (localStorage). Buscable y exportable a CSV. |
+| 02 | **Leads** | *Pipeline vivo* — tablero **kanban arrastrable** (Nuevo · Preguntó costo · Cotización · Seguimiento · Llamada · Cerrado). Arrastra una tarjeta y el pipeline se recalcula y **persiste** (localStorage). **Toca cualquier lead** para abrir su *contexto que viaja*: línea de negocio, propósito, fecha objetivo, ICP fit, stakeholders, última promesa, objeción abierta, checklist de la compuerta de calificación y línea de tiempo de eventos. |
 | 03 | **Agente IA** | *No inventa: deriva* — **simulador de chat** contra el SOP. Responde con catálogo y precios reales; ante una regla dura (descuento, zona no servida, pedido < mínimo) sella el *handoff* con motivo y timestamp. Incluye pruebas de riesgo y bitácora de handoffs. |
 | 04 | **Seguimientos** | La cola de reactivación — evita que conversaciones con interés real se enfríen (≈60% de los que no avanzan son recuperables), del más frío al más reciente, con el mensaje listo para copiar. |
+| 05 | **Arquitectura** | El documento de **arquitectura comercial** (azxion · v.2026.06) hecho navegable: las 3 fugas, el modelo de 4 canales, el mapa de 10 etapas con la compuerta MQL→SQL, criterios de calificación, cadencia de reactivación, taxonomías de objeciones y pérdida, las 3 preguntas del lunes, el spec del dashboard y los 6 principios. |
 
 ## Correr en local
 

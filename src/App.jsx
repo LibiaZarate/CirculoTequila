@@ -4,6 +4,7 @@ import Panel from './sections/Panel.jsx'
 import Leads from './sections/Leads.jsx'
 import Agente from './sections/Agente.jsx'
 import Seguimientos from './sections/Seguimientos.jsx'
+import Arquitectura from './sections/Arquitectura.jsx'
 
 const STORAGE_KEY = 'circulo.board.v1'
 
@@ -83,6 +84,7 @@ export default function App() {
       leads: { ph: 'Buscar lead, región u ocasión…', pill: 'sync: wa.api', btn: '+ Nuevo lead', arrow: false, action: addLead },
       agente: { ph: 'Probar un mensaje contra el SOP…', pill: 'modelo: en_vivo', btn: 'Cargar SOP', arrow: true, action: () => window.open(agent.materials, '_blank', 'noopener') },
       seguimientos: { ph: 'Buscar prospecto en seguimiento…', pill: 'datos en vivo', btn: 'Exportar', arrow: true, action: () => exportCSV(board) },
+      arquitectura: { ph: 'Buscar en la arquitectura…', pill: 'azxion · v.2026.06', btn: 'Exportar', arrow: true, action: () => exportCSV(board) },
     }),
     [board],
   )
@@ -93,6 +95,7 @@ export default function App() {
     leads: <Leads board={board} setBoard={setBoard} query={query} />,
     agente: <Agente />,
     seguimientos: <Seguimientos query={query} />,
+    arquitectura: <Arquitectura />,
   }
 
   return (
